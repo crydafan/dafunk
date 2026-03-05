@@ -1,0 +1,21 @@
+name: dafunk-club
+
+services:
+  app:
+    build: .
+    expose:
+      - "8080"
+
+  caddy:
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data # store certificates
+    depends_on:
+      - app
+
+volumes:
+  caddy_data:
