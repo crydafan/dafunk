@@ -8,7 +8,7 @@ import (
 )
 
 func startBroadcast(h *Hub) {
-	cmd := exec.Command("ffmpeg", "-re", "-i", "./musique/daft-punk/discovery/Daft Punk - Discovery - 01-07 Superheroes.flac", "-vn", "-f", "mp3", "-ab", "192k", "pipe:1")
+	cmd := exec.Command("ffmpeg", "-re", "-i", "./musique/daft-punk/discovery/01-07-superheroes.flac", "-vn", "-f", "mp3", "-ab", "192k", "pipe:1")
 
 	// This is only for debugging
 	// cmd.Stderr = os.Stderr
