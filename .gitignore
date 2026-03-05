@@ -3,3 +3,6 @@ tmp/
 
 # Music
 *.flac
+
+# Environment files
+.env

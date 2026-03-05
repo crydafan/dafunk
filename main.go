@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
-	"os/exec"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
+/*
 func startBroadcast(h *Hub) {
 	cmd := exec.Command("ffmpeg", "-re", "-i", "./musique/daft-punk/discovery/01-07-superheroes.flac", "-vn", "-f", "mp3", "-ab", "192k", "pipe:1")
 
@@ -36,11 +37,42 @@ func startBroadcast(h *Hub) {
 		}
 	}
 }
+*/
+
+func runPlaylist(hub *Hub) {
+	queue := []AudioSource{
+		&SpeechSource{
+			Text: `
+[French accent] Bonsoir, beautiful people of the night. You're listening to the smoothest frequencies in the galaxy.
+
+[giggle] And now… something heroic is about to happen.
+
+[dramatic tone] From the legendary robots who taught the world how to groove… here comes a track that feels like a comic book exploding on the dancefloor.
+
+[whisper] Close your eyes… imagine neon lights, chrome helmets, and pure energy.
+
+[sarcastic] Yes, yes… your speakers are about to work very hard.
+
+Turn it up… this is "Superheroes" by Daft Punk.
+`,
+			VoiceID: "rbFGGoDXFHtVghjHuS3E",
+		},
+		&FileSource{Path: "./musique/daft-punk/discovery/01-07-superheroes.flac"},
+	}
+
+	for {
+		for _, source := range queue {
+			if err := source.Stream(hub); err != nil {
+				fmt.Printf("Error streaming source: %v\n", err)
+			}
+		}
+	}
+}
 
 func main() {
 	hub := NewHub()
 
-	go startBroadcast(hub)
+	go runPlaylist(hub)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "audio/mpeg")
